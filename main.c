@@ -1,25 +1,37 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include "structures/process.h"
+#include "structures/resourceList.h"
+#include "structures/systemState.h"
 
-typedef struct {
-	int count;
-	int *resources;
-} ResourceList;
-
-typedef struct {
-	int id;
-	int *max_need;
-	int *allocated;
-	int *need;
-} Process;
-
-typedef struct {
-	int process_count;
-	Process *processes;
-	ResourceList available;
-	ResourceList total;
-} SystemState;
+#define MAX_PROCESSES 10
+#define MAX_RESOURCES 26
 
 void welcome_user();
+
+bool initialize_system(SystemState *state);
+
+bool simulation_mode(SystemState *state);
+
+void bankers_algorithm(SystemState *state);
+
+void user_defined_algorithm(SystemState *state);
+
+void print_system_state(SystemState *state) {
+}
+
+void input_from_file(SystemState *state);
+
+void user_defined_input(SystemState *state);
+
+void random_input(SystemState *state) {
+}
+
+void cleanup_system(SystemState *state);
+
+#include "initialization/initialize_system.h"
+#include "initialization/user_defined_input.h"
 
 int main() {
 	SystemState state;
@@ -27,7 +39,20 @@ int main() {
 	welcome_user();
 
 	while (true) {
-		break;
+		if (initialize_system(&state)) {
+			print_system_state(&state);
+			
+			bool exit = false;
+
+			if (!simulation_mode(&state)) {
+				exit = true;
+			}
+			cleanup_system(&state);
+			if (exit) break;
+		}
+		else {
+			break;
+		}
 	}
 	return 0;
 }
