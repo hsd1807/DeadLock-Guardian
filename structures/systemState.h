@@ -6,4 +6,5 @@ typedef struct {
 	ResourceList total;
 	int *completed;
 	int *safe;
+	int is_safe;
 } SystemState;
