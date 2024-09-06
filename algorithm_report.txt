@@ -1,0 +1,7 @@
+=== DeadLock Guardian Report ===
+
+Simulation completed in 0.000399 seconds
+Memory Usage: approximately 352 bytes
+
+Final System State: System is in SAFE State.
+Safe Sequence: P0 P1 P2 
