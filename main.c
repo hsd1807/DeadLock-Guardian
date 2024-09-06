@@ -53,6 +53,9 @@ void cleanup_system(SystemState *state);
 #include "initialization/random_input.h"
 
 #include "utilities/print_system_state.h"
+#include "utilities/calculate_remaining_need.h"
+#include "utilities/calculate_available_resources.h"
+#include "utilities/validate_and_sanitize_input.h"
 
 #include "algorithms/simulation_mode.h"
 #include "algorithms/bankers_algorithm.h"
@@ -76,7 +79,6 @@ int main() {
 
 			printf("\nSystem State after getting validated and sanitized\n\n");
 
-			
 			bool exit = false;
 			
 			if (!simulation_mode(&state)) {
@@ -106,50 +108,4 @@ void welcome_user() {
 	printf("Welcome to DeadLock Guardian : A Banker's Algorithm Simulator\n");
 	printf("This program simulates resource allocation and deadlock detection\n");
 	printf("\n");
-}
-
-void calculate_remaining_need(SystemState *state) {
-	for (int i = 0; i < state->process_count; i++) {
-		for (int j = 0;j < state->resource_count; j++) {
-			state->processes[i].rem_need[j] = state->processes[i].max_need[j] - state->processes[i].allocated[j];
-		}
-	}
-}
-
-void calculate_available_resources(SystemState *state) {
-	for (int j = 0; j < state->resource_count; j++) {
-		int allocated_sum = 0;
-		for (int i = 0; i < state->process_count; i++) {
-			allocated_sum += state->processes[i].allocated[j];
-		}
-		state->available.resources[j] = state->total.resources[j] - allocated_sum;
-	}
-}
-
-void validate_and_sanitize_input(SystemState *state) {
-	for (int i = 0; i < state->process_count; i++) {
-		for (int j = 0; j < state->resource_count; j++) {
-			if (state->processes[i].max_need[j] < 0) {
-				state->processes[i].max_need[j] = 0;
-			}
-			if (state->processes[i].allocated[j] < 0) {
-				state->processes[i].allocated[j] = 0;
-			}
-
-			if (state->processes[i].allocated[j] > state->processes[i].max_need[j]) {
-			state->processes[i].allocated[j] = state->processes[i].max_need[j];
-			}
-
-
-			state->processes[i].rem_need[j] = state->processes[i].max_need[j] - state->processes[i].allocated[j];
-		}
-	}
-	calculate_remaining_need(state);
-	calculate_available_resources(state);
-
-	for (int j = 0; j < state->resource_count; j++) {
-	    if (state->available.resources[j] < 0) {
-	        state->available.resources[j] = 0;
-		}
-	}
 }
