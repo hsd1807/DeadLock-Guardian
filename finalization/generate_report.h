@@ -34,8 +34,12 @@ void generate_report(SystemState *state, clock_t start_time, clock_t end_time) {
     scanf(" %c", &choice); // Read user choice
 
     if (choice == 'y' || choice == 'Y') {
+        char filename[100];
+        printf("Enter the name of the input file: ");
+        scanf("%s", filename);
+        
         // Open the file for writing
-        FILE *fp = fopen("algorithm_report.txt", "w");
+        FILE *fp = fopen(filename, "w");
         if (fp == NULL) {
             printf("Error opening file for writing.\n");
             return; // Exit if file cannot be opened
