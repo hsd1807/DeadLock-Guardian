@@ -24,4 +24,8 @@ void validate_and_sanitize_input(SystemState *state) {
 	        state->available.resources[j] = 0;
 		}
 	}
+	
+	for (int i = 0; i < state->process_count; i++) {
+	    state->completed[i] = 0;
+	}
 }
